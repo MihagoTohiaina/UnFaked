@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldAlert, ShieldCheck } from "lucide-react";
 import Tweet from "@/components/TweetCard";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 
 export default function Home() {
   return (
@@ -111,6 +112,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <SmoothCursor />
     </div>
   );
 }
