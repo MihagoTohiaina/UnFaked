@@ -67,6 +67,7 @@ export async function POST(req: Request) {
 
             if (!response.ok) {
                 const errorText = await response.text();
+                // Safe logging of error
                 console.error(`Failed to send user data to external API. Status: ${response.status}`, {
                     status: response.status,
                     statusText: response.statusText,
