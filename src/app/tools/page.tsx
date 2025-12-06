@@ -81,7 +81,7 @@ export default function Tools() {
 
     {/* BUTTON */}
     <div className="flex justify-center">
-      <GradientButton size="lg">
+      <GradientButton >
         Analyser le contenu
       </GradientButton>
     </div>
@@ -104,7 +104,7 @@ export default function Tools() {
 
       {/* FOOTER */}
       <footer className="mt-16 py-8 text-gray-500 text-sm text-center border-t w-full">
-        SafeCheck © 2025 · Projet AlgoMada
+        UnFaked © 2025 · 
       </footer>
     </main>
   );
