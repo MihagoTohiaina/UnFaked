@@ -43,6 +43,8 @@
   --radius-xl: calc(var(--radius) + 4px);
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
+  var(--delay, 0ms);
   @keyframes marquee {
   from {
     transform: translateX(0);
@@ -59,7 +61,20 @@
     transform: translateY(calc(-100% - var(--gap)));
     }
   }
+
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
 }
+
 
 :root {
   --radius: 0.625rem;
