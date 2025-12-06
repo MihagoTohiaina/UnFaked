@@ -1,10 +1,10 @@
- 
 
-interface Props{
-children : string,
+
+interface Props {
+  children: string,
 }
 
-export default function GradientButton({children } : Props ) {
+export default function GradientButton({ children }: Props) {
   return (
       <button className="group relative px-8 py-4 bg-linear-to-r from-red-600 to-orange-500 text-white font-bold text-lg rounded-full transition-all duration-300 hover:shadow-[0_15px_40px_rgba(255,69,0,0.6)] flex items-center gap-3">
         {children}
