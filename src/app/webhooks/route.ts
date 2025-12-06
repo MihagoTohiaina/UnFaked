@@ -52,7 +52,12 @@ export async function POST(req: Request) {
         const name = `${first_name || ''} ${last_name || ''}`.trim();
 
         try {
-            const response = await fetch('https://preprod-misinformation-by-ai-1.onrender.com/users/sign-up', {
+            if (!process.env.MSBA_URL) {
+                console.error('MSBA_URL is not defined');
+                return new Response('Error: MSBA_URL not defined', { status: 500 });
+            }
+
+            const response = await fetch(process.env.MSBA_URL, {
                 method: 'POST',
                 headers: {
                     'accept': 'application/json',
