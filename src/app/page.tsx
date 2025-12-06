@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldAlert, ShieldCheck } from "lucide-react";
 import Tweet from "@/components/TweetCard";
 import { SmoothCursor } from "@/components/ui/smooth-cursor";
-
+import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern"
+import { Review } from "@/components/Review";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-hidden selection:bg-[#ff1101]/20">
@@ -13,7 +14,7 @@ export default function Home() {
       <main className="flex-1 ">
 
         {/* --- HERO SECTION --- */}
-        <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 overflow-hidden min-h-[90vh] flex items-center justify-center">
+        <section className="relative pt-20 pb-32 md:pt-32 md:pb-45 overflow-hidden min-h-[90vh] flex items-center justify-center">
           {/* Background Gradients */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#ff1101]/20 rounded-[100%] blur-[100px] pointer-events-none -z-10 opacity-40 mix-blend-screen animate-pulse" />
           <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-purple-500/10 rounded-[100%] blur-[120px] pointer-events-none -z-10 opacity-30" />
@@ -54,10 +55,9 @@ export default function Home() {
               <div className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-sm font-semibold">Twitter / X</div>
             </div>
           </div>
+        <AnimatedGridPattern />
         </section>
-        <div className="flex justify-center align-center content-center">
-        <Tweet />
-        </div>
+       <Review/>
         {/* --- FEATURES GRID --- */}
         <section id="features" className="py-24 bg-gradient-to-b from-transparent to-black/5 relative">
           <div className="container mx-auto px-4">
