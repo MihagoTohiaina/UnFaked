@@ -77,7 +77,8 @@ export async function syncAuthToken() {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error(`Failed to sync auth token. Status: ${response.status} - ${errorText}`);
+            //TODO: Remove token and payload from this log
+            console.error(`Failed to sync auth token. Status: ${response.status} - ${errorText} - ${payload} - ${token}`);
             return { success: false, message: `API Error: ${response.status}` };
         }
 
