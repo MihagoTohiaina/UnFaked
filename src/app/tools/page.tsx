@@ -4,13 +4,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function Tools() {
   return (
     <main className="min-h-screen bg-[#FAFAFA] flex flex-col items-center px-6">
-
-      {/* HEADER */}
-      <header className="w-full flex justify-between items-center py-6 max-w-6xl">
-        <div className="text-xl font-bold">SafeCheck</div>
-        <div className="w-10 h-10 rounded-full bg-gray-200" />
-      </header>
-
       {/* HERO */}
       <section className="text-center mt-10">
         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
@@ -81,7 +74,7 @@ export default function Tools() {
 
     {/* BUTTON */}
     <div className="flex justify-center">
-      <GradientButton>
+      <GradientButton >
         Analyser le contenu
       </GradientButton>
     </div>
@@ -104,7 +97,7 @@ export default function Tools() {
 
       {/* FOOTER */}
       <footer className="mt-16 py-8 text-gray-500 text-sm text-center border-t w-full">
-        SafeCheck © 2025 · Projet AlgoMada
+        UnFaked © 2025 · 
       </footer>
     </main>
   );
