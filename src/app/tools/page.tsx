@@ -1,37 +1,30 @@
-"use client";
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { ReactNode, SelectHTMLAttributes, useState } from "react";
-import { useForm } from "react-hook-form";
+'use client'
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { ReactNode, SelectHTMLAttributes, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from "sonner"; // ← ajouté
 
 // Composant GradientButton
-function GradientButton({
-  children,
-  onClick,
-  disabled,
-}: {
-  children: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-}) {
+function GradientButton({ children, onClick, disabled } : {children : ReactNode, onClick?: () => void, disabled?: boolean}) {
   return (
-    <button
+    <button 
       onClick={onClick}
       disabled={disabled}
       className="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-orange-500 text-white font-bold text-lg rounded-full transition-all duration-300 hover:shadow-[0_15px_40px_rgba(255,69,0,0.6)] flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {children}
-      <svg
-        className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-        fill="none"
-        stroke="currentColor"
+      <svg 
+        className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
+        fill="none" 
+        stroke="currentColor" 
         viewBox="0 0 24 24"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 7l5 5m0 0l-5 5m5-5H6"
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M13 7l5 5m0 0l-5 5m5-5H6" 
         />
       </svg>
     </button>
@@ -39,9 +32,9 @@ function GradientButton({
 }
 
 // Composant Select simplifié
-function Select({ value, onChange }: SelectHTMLAttributes<HTMLSelectElement>) {
+function Select({ value, onChange } : SelectHTMLAttributes<HTMLSelectElement>) {
   return (
-    <select
+    <select 
       value={value}
       onChange={onChange}
       className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -59,16 +52,18 @@ export default function Tools() {
   const { user } = useUser();
   const { handleSubmit } = useForm();
   const router = useRouter();
-  const [contentType, setContentType] = useState("");
+  const [contentType, setContentType] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [textContent, setTextContent] = useState("");
-  const [urlContent, setUrlContent] = useState("");
+  const [textContent, setTextContent] = useState('');
+  const [urlContent, setUrlContent] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
     if (!user?.primaryEmailAddress?.emailAddress) {
-      alert("Vous devez être connecté pour analyser du contenu");
+      toast.error("Connexion requise", {
+        description: "Vous devez être connecté pour analyser du contenu.",
+      });
       return;
     }
 
@@ -77,107 +72,95 @@ export default function Tools() {
     try {
       const email = user.primaryEmailAddress.emailAddress;
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-      if (contentType === "video" && file) {
+      
+      if (contentType === 'video' && file) {
         // Upload vidéo
         const formData = new FormData();
-        formData.append("video", file);
-
+        formData.append('file', file);
+        
         const response = await fetch(
-          `${baseUrl}/api/media/videos/upload?userEmail=${encodeURIComponent(
-            email
-          )}`,
+          `${baseUrl}/api/media/videos/upload?userEmail=a.razafindratelo@gmail.com`,
           {
-            method: "POST",
+            method: 'POST',
             body: formData,
           }
         );
 
         if (!response.ok) {
-          const error = await response
-            .json()
-            .catch(() => ({ message: "Upload failed" }));
-          throw new Error(
-            error.message || "Erreur lors de l'upload de la vidéo"
-          );
+          const error = await response.json().catch(() => ({ message: 'Upload failed' }));
+          throw new Error(error.message || 'Erreur lors de l\'upload de la vidéo');
         }
         const data = await response.json();
-        console.log("Vidéo uploadée:", data);
-      } else if (contentType === "image" && file) {
+        console.log('Vidéo uploadée:', data);
+        router.push('tools/report/video')
+        
+      } else if (contentType === 'image' && file) {
         // Upload image
         const formData = new FormData();
-        formData.append("image", file);
-
+        formData.append('file', file);
+        
         const response = await fetch(
-          `${baseUrl}/api/media/images/upload?userEmail=${encodeURIComponent(
-            email
-          )}`,
+          `${baseUrl}/api/media/images/upload?userEmail=${encodeURIComponent(email)}`,
           {
-            method: "POST",
+            method: 'POST',
             body: formData,
           }
         );
 
         if (!response.ok) {
-          const error = await response
-            .json()
-            .catch(() => ({ message: "Upload failed" }));
-          throw new Error(
-            error.message || "Erreur lors de l'upload de l'image"
-          );
+          const error = await response.json().catch(() => ({ message: 'Upload failed' }));
+          throw new Error(error.message || 'Erreur lors de l\'upload de l\'image');
         }
         const data = await response.json();
-        console.log("Image uploadée:", data);
-      } else if (contentType === "text" && textContent) {
+        console.log('Image uploadée:', data);
+        router.push('tools/report/image')
+        
+      } else if (contentType === 'text' && textContent) {
         // Upload texte
         const response = await fetch(
-          `${baseUrl}/api/media/text/upload?userEmail=${encodeURIComponent(
-            email
-          )}`,
+          `${baseUrl}/api/media/text/upload?userEmail=${encodeURIComponent(email)}`,
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ text: textContent }),
           }
         );
 
         if (!response.ok) {
-          const error = await response
-            .json()
-            .catch(() => ({ message: "Analysis failed" }));
-          throw new Error(error.message || "Erreur lors de l'analyse du texte");
+          const error = await response.json().catch(() => ({ message: 'Analysis failed' }));
+          throw new Error(error.message || 'Erreur lors de l\'analyse du texte');
         }
         const data = await response.json();
-        console.log("Texte analysé:", data);
-      } else if (contentType === "article" && urlContent) {
+        console.log('Texte analysé:', data);
+        router.push('tools/report/text')
+        
+      } else if (contentType === 'article' && urlContent) {
         // Upload article (URL)
         const response = await fetch(
-          `${baseUrl}/api/media/article/upload?userEmail=${encodeURIComponent(
-            email
-          )}`,
+          `${baseUrl}/api/media/article/upload?userEmail=${encodeURIComponent(email)}`,
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ url: urlContent }),
           }
         );
 
         if (!response.ok) {
-          const error = await response
-            .json()
-            .catch(() => ({ message: "Analysis failed" }));
-          throw new Error(
-            error.message || "Erreur lors de l'analyse de l'article"
-          );
+          const error = await response.json().catch(() => ({ message: 'Analysis failed' }));
+          throw new Error(error.message || 'Erreur lors de l\'analyse de l\'article');
         }
         const data = await response.json();
-        console.log("Article analysé:", data);
+        console.log('Article analysé:', data);
+        router.push('tools/report/article')
+        
       } else {
-        alert("Veuillez sélectionner un contenu à analyser");
+        toast("Sélection requise", {
+          description: "Veuillez sélectionner un contenu à analyser.",
+        });
         setLoading(false);
         return;
       }
@@ -185,13 +168,18 @@ export default function Tools() {
       // Réinitialiser le formulaire après succès
       setFile(null);
       setPreview(null);
-      setTextContent("");
-      setUrlContent("");
-      alert("Analyse terminée avec succès !");
-      router.push("/report");
+      setTextContent('');
+      setUrlContent('');
+
+      toast.success("Analyse terminée 🎉", {
+        description: "Votre contenu a été analysé avec succès.",
+      });
+      
     } catch (error) {
-      console.error("Erreur:", error);
-      alert(error instanceof Error ? error.message : "Une erreur est survenue");
+      console.error('Erreur:', error);
+      toast.error("Erreur", {
+        description: error instanceof Error ? error.message : "Une erreur est survenue.",
+      });
     } finally {
       setLoading(false);
     }
@@ -201,7 +189,7 @@ export default function Tools() {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-
+      
       const reader = new FileReader();
       reader.onloadend = (): void => {
         setPreview(reader.result as string);
@@ -216,67 +204,47 @@ export default function Tools() {
   };
 
   const renderUploadSection = () => {
-    if (contentType === "image" && preview) {
+    if (contentType === 'image' && preview) {
       return (
         <div className="relative">
-          <img
-            src={preview}
-            alt="Aperçu"
+          <img 
+            src={preview} 
+            alt="Aperçu" 
             className="w-full h-auto max-h-96 object-contain rounded-xl"
           />
           <button
             onClick={handleRemoveFile}
             className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
       );
     }
 
-    if (contentType === "video" && preview) {
+    if (contentType === 'video' && preview) {
       return (
         <div className="relative">
-          <video
-            src={preview}
-            controls
+          <video 
+            src={preview} 
+            controls 
             className="w-full h-auto max-h-96 rounded-xl"
           />
           <button
             onClick={handleRemoveFile}
             className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
       );
     }
 
-    if (contentType === "text") {
+    if (contentType === 'text') {
       return (
         <textarea
           value={textContent}
@@ -287,7 +255,7 @@ export default function Tools() {
       );
     }
 
-    if (contentType === "article") {
+    if (contentType === 'article') {
       return (
         <input
           type="url"
@@ -299,14 +267,14 @@ export default function Tools() {
       );
     }
 
-    if (contentType === "image" || contentType === "video") {
-      const acceptTypes =
-        contentType === "image"
-          ? "image/jpeg,image/png,image/jpg,image/webp"
-          : "video/mp4,video/webm,video/quicktime";
-
-      const formatText =
-        contentType === "image" ? ".jpg, .png, .webp" : ".mp4, .webm, .mov";
+    if (contentType === 'image' || contentType === 'video') {
+      const acceptTypes = contentType === 'image' 
+        ? 'image/jpeg,image/png,image/jpg,image/webp' 
+        : 'video/mp4,video/webm,video/quicktime';
+      
+      const formatText = contentType === 'image'
+        ? '.jpg, .png, .webp'
+        : '.mp4, .webm, .mov';
 
       return (
         <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-[#FF6A5A] transition">
@@ -319,11 +287,10 @@ export default function Tools() {
           />
           <label htmlFor="fileInput" className="cursor-pointer">
             <div className="text-6xl mb-4">
-              {contentType === "image" ? "🖼️" : "🎥"}
+              {contentType === 'image' ? '🖼️' : '🎥'}
             </div>
             <p className="text-lg font-medium text-gray-700">
-              Cliquez pour sélectionner{" "}
-              {contentType === "image" ? "une image" : "une vidéo"}
+              Cliquez pour sélectionner {contentType === 'image' ? 'une image' : 'une vidéo'}
             </p>
             <p className="text-sm text-gray-500 mt-1">
               Formats supportés : {formatText}
@@ -346,13 +313,11 @@ export default function Tools() {
     <main className="min-h-screen bg-[#FAFAFA] flex flex-col items-center px-6">
       <section className="text-center mt-10">
         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-          Détectez la fiabilité
-          <br />
-          de n'importe quel contenu
+          Détectez la fiabilité<br />de n'importe quel contenu
         </h1>
         <p className="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
-          Analysez des images, vidéos, textes ou articles pour repérer les
-          contenus manipulés ou générés par IA.
+          Analysez des images, vidéos, textes ou articles pour repérer  
+          les contenus manipulés ou générés par IA.
         </p>
       </section>
 
@@ -367,10 +332,7 @@ export default function Tools() {
               <label className="block mb-2 text-gray-700 font-medium">
                 Type de contenu à analyser
               </label>
-              <Select
-                value={contentType}
-                onChange={(e) => setContentType(e.target.value)}
-              />
+              <Select value={contentType} onChange={(e) => setContentType(e.target.value)} />
             </div>
 
             <div className="mb-8">
@@ -382,7 +344,7 @@ export default function Tools() {
 
             <div className="flex justify-center">
               <GradientButton disabled={loading}>
-                {loading ? "Analyse en cours..." : "Analyser le contenu"}
+                {loading ? 'Analyse en cours...' : 'Analyser le contenu'}
               </GradientButton>
             </div>
           </form>
