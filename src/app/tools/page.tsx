@@ -81,7 +81,7 @@ export default function Tools() {
 
     {/* BUTTON */}
     <div className="flex justify-center">
-      <GradientButton size="lg">
+      <GradientButton>
         Analyser le contenu
       </GradientButton>
     </div>
