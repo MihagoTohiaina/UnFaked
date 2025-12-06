@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const MOCKS: any = {
   image: {
@@ -130,9 +131,10 @@ const LABELS = {
   fake: "Probable deepfake",
 };
 
-export default function ReportPage({ params }: any) {
-  const mock = MOCKS[params.type] || MOCKS["image"];
-
+export default function ReportPage() {
+  const params = useParams<{type: string}>();
+  const mock = MOCKS[params?.type] || MOCKS["image"];
+  const verdict = mock.globalVerdict as "safe" | "suspect" | "fake";
   return (
     <main className="min-h-screen bg-[#FAFAFA] flex flex-col items-center px-6 pb-20">
       {/* HEADER */}
@@ -146,13 +148,12 @@ export default function ReportPage({ params }: any) {
 
       {/* CARD */}
       <div className="bg-white rounded-3xl shadow-xl p-8 max-w-4xl w-full">
-
         {/* GLOBAL VERDICT */}
         <div className="flex items-center gap-4 mb-6">
-          {ICONS[mock.globalVerdict]}
+          {ICONS[verdict]}
           <div>
-            <h2 className={`text-2xl font-bold ${COLORS[mock.globalVerdict]}`}>
-              {LABELS[mock.globalVerdict]}
+            <h2 className={`text-2xl font-bold ${COLORS[verdict]}`}>
+              {LABELS[verdict]}
             </h2>
             <p className="text-gray-600 mt-1">{mock.summary}</p>
           </div>
