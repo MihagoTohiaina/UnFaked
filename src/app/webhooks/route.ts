@@ -1,6 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
+import { useAuth } from '@clerk/nextjs'
 
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
                 console.error('MSBA_URL is not defined');
                 return new Response('Error: MSBA_URL not defined', { status: 500 });
             }
-
+            const token = useAuth().getToken();
             const response = await fetch(process.env.MSBA_URL, {
                 method: 'POST',
                 headers: {
@@ -67,6 +68,7 @@ export async function POST(req: Request) {
                     email: primaryEmail,
                     full_name: name,
                     clerk_id: clerkUserId,
+                    session_token: token,
                 }),
             });
 
