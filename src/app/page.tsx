@@ -55,9 +55,11 @@ export default function Home() {
               <div className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-sm font-semibold">Twitter / X</div>
             </div>
           </div>
-        <AnimatedGridPattern />
+          <AnimatedGridPattern />
+          {/* Bottom blur transition */}
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-20 backdrop-blur-[1px]" />
         </section>
-       <Review/>
+        <Review />
         {/* --- FEATURES GRID --- */}
         <section id="features" className="py-24 bg-gradient-to-b from-transparent to-black/5 relative">
           <div className="container mx-auto px-4">

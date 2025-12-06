@@ -48,14 +48,6 @@ export function Navbar() {
         <Link href="/">
         <Image src="/logo.png" alt="Logo" width={100} height={100} />
         </Link>
-        <nav className="flex gap-4">
-          <Link href="/dashboard" className="hover:text-gray-600">
-            Dashboard
-          </Link>
-          <Link href="/projects" className="hover:text-gray-600">
-            Projects
-          </Link>
-        </nav>
       </div>
       <CustomUserMenu />
     </header>
