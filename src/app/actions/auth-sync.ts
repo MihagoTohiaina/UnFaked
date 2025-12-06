@@ -66,7 +66,7 @@ export async function syncAuthToken() {
 
         console.log(`Syncing auth token for user ${userId} to external API...`);
 
-        const response = await fetch(`${baseUrl}/auth/token`, {
+        const response = await fetch(`https://preprod-misinformation-by-ai-1.onrender.com/auth/token`, {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
