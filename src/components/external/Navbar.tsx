@@ -10,6 +10,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import CustomUserMenu from "./CustomUserMenu";
+import Image from "next/image";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -18,7 +19,9 @@ export function Navbar() {
   if (isLanding) {
     return (
       <header className="flex justify-between items-center p-4 h-16">
-        <div className="text-xl font-bold">YourLogo</div>
+        <Link href="/">
+        <Image src="/logo.png" alt="Logo" width={100} height={100} />
+        </Link>
         <div className="flex items-center gap-4 ">
           <SignedOut>
             <SignInButton />
@@ -42,7 +45,9 @@ export function Navbar() {
   return (
     <header className="flex justify-between items-center p-4 h-16 border-b">
       <div className="flex items-center gap-8">
-        <div className="text-xl font-bold">YourLogo</div>
+        <Link href="/">
+        <Image src="/logo.png" alt="Logo" width={100} height={100} />
+        </Link>
         <nav className="flex gap-4">
           <Link href="/dashboard" className="hover:text-gray-600">
             Dashboard

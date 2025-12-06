@@ -10,6 +10,7 @@ import {
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/external/Navbar'
+import { AuthWatcher } from '@/components/auth-watcher'
 import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
@@ -36,7 +37,8 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-           <Navbar />
+          <Navbar />
+          <AuthWatcher />
           {children}
            <Toaster richColors closeButton />
         </body>
