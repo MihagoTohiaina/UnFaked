@@ -1,18 +1,25 @@
-'use client'
+"use client";
 
-import { usePathname } from 'next/navigation'
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import Link from 'next/link'
+import { usePathname } from "next/navigation";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+import Link from "next/link";
+import CustomUserMenu from "./CustomUserMenu";
 
 export function Navbar() {
-  const pathname = usePathname()
-  const isLanding = pathname === '/'
+  const pathname = usePathname();
+  const isLanding = pathname === "/";
 
   if (isLanding) {
     return (
       <header className="flex justify-between items-center p-4 h-16">
         <div className="text-xl font-bold">YourLogo</div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ">
           <SignedOut>
             <SignInButton />
             <SignUpButton>
@@ -22,11 +29,14 @@ export function Navbar() {
             </SignUpButton>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <div className="py-5 " >
+            <CustomUserMenu></CustomUserMenu>
+            </div>
+
           </SignedIn>
         </div>
       </header>
-    )
+    );
   }
 
   return (
@@ -34,11 +44,15 @@ export function Navbar() {
       <div className="flex items-center gap-8">
         <div className="text-xl font-bold">YourLogo</div>
         <nav className="flex gap-4">
-          <Link href="/dashboard" className="hover:text-gray-600">Dashboard</Link>
-          <Link href="/projects" className="hover:text-gray-600">Projects</Link>
+          <Link href="/dashboard" className="hover:text-gray-600">
+            Dashboard
+          </Link>
+          <Link href="/projects" className="hover:text-gray-600">
+            Projects
+          </Link>
         </nav>
       </div>
-      <UserButton />
+      <CustomUserMenu />
     </header>
-  )
+  );
 }
